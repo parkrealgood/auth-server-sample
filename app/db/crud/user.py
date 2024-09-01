@@ -1,11 +1,15 @@
+from typing import Type
+
 from sqlalchemy.orm import Session
 from app.db.models.user import User
 from app.schemas.user import UserCreate
 
-def get_user_by_email(db: Session, email: str):
+
+def get_user_by_email(db: Session, email: str) -> Type[User] | None:
     return db.query(User).filter(User.email == email).first()
 
-def create_user(db: Session, user: UserCreate):
+
+def create_user(db: Session, user: UserCreate) -> User:
     hashed_password = user.password
     db_user = User(email=user.email, hashed_password=hashed_password)
     db.add(db_user)
